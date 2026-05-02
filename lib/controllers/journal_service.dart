@@ -16,7 +16,7 @@ class JournalService {
         title: entry.title,
         content: entry.content,
         date: entry.date,
-        moodId: entry.mood,
+        moodId: _moodCollection.doc().id, // Assuming you want to link a mood entry here
       );
 
       await _journalCollection.add(newEntry.toMap());

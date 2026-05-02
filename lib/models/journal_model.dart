@@ -4,7 +4,7 @@ class JournalModel {
   final String title;
   final String content;
   final DateTime date;
-  final List<String> moodId;
+  String? moodId;
 
   JournalModel({
     required this.id,
@@ -12,7 +12,7 @@ class JournalModel {
     required this.title,
     required this.content,
     required this.date,
-    required this.moodId,
+    this.moodId,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,7 +33,7 @@ class JournalModel {
       title: data['title'] ?? '',
       content: data['content'] ?? '',
       date: DateTime.parse(data['date']),
-      moodId: List<String>.from(data['moodIds'] ?? []),
+      moodId: data['moodIds'] ?? '',
     );
   }
 }
