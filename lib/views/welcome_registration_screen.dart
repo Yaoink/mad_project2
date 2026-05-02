@@ -71,7 +71,18 @@ class _WelcomeRegistrationScreenState extends State<WelcomeRegistrationScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(),
                       obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
                     ),
                   ],
                 )
