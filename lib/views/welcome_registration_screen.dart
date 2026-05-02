@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mad_project2/controllers/auth_service.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../views/login_screen.dart';
+import '../views/home_screen.dart';
 
 class WelcomeRegistrationScreen extends StatefulWidget {
   const WelcomeRegistrationScreen({super.key});
@@ -72,7 +75,11 @@ class _WelcomeRegistrationScreenState extends State<WelcomeRegistrationScreen> {
                     const SizedBox(height: 10),
                     TextFormField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(),
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock),
+                        border: OutlineInputBorder(),
+                      ),
                       obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -83,6 +90,39 @@ class _WelcomeRegistrationScreenState extends State<WelcomeRegistrationScreen> {
                         }
                         return null;
                       },
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed:() async {
+                        if (_formKey.currentState!.validate()) {
+                          try {
+                            await _authService.register(_emailController.text, _passwordController.text);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Registration successful!')),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                            ),
+                        );
+                          } on FirebaseAuthException catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Registration failed: ${e.message}')),
+                            );
+                          }
+                        }
+                      },
+                      child: const Text('Register'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        );
+                      },
+                      child: const Text('Already have an account? Log in'),
                     ),
                   ],
                 )
