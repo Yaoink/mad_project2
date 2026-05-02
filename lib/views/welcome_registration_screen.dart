@@ -35,10 +35,21 @@ class _WelcomeRegistrationScreenState extends State<WelcomeRegistrationScreen> {
             AnimatedTextKit(
               animatedTexts: [
                 ScrambleAnimatedText(
-                  'Welcome to Mental Zen Journaling App',
+                  'Welcome! Happy to see you!',
+                  textStyle: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                   speed: const Duration(milliseconds: 200),
                 ),
-                ScrambleAnimatedText('Please Register to Continue'),
+                ScrambleAnimatedText(
+                  'Please Register to Continue',
+                  textStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                  ),
+                  speed: const Duration(milliseconds: 100),
+                ),
               ],
               onTap: () {
                   print("Tap Event");
