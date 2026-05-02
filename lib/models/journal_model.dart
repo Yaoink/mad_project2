@@ -4,7 +4,7 @@ class JournalModel {
   final String title;
   final String content;
   final DateTime date;
-  final String mood;
+  final List<String> moodId;
 
   JournalModel({
     required this.id,
@@ -12,7 +12,7 @@ class JournalModel {
     required this.title,
     required this.content,
     required this.date,
-    required this.mood,
+    required this.moodId,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,18 +22,18 @@ class JournalModel {
       'title': title,
       'content': content,
       'date': date.toIso8601String(),
-      'mood': mood,
+      'moodId': moodId,
     };
   }
 
   factory JournalModel.fromMap(Map<String, dynamic> data) {
     return JournalModel(
-      id: data['id'],
-      userId: data['userId'],
-      title: data['title'],
-      content: data['content'],
+      id: data['id'] ?? '',
+      userId: data['userId'] ?? '',
+      title: data['title'] ?? '',
+      content: data['content'] ?? '',
       date: DateTime.parse(data['date']),
-      mood: data['mood'],
+      moodId: List<String>.from(data['moodIds'] ?? []),
     );
   }
 }
