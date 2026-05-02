@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mad_project2/views/journal_screen.dart';
 import 'views/welcome_registration_screen.dart';
-
+import 'views/journal_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
