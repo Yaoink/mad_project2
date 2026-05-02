@@ -41,12 +41,41 @@ class _WelcomeRegistrationScreenState extends State<WelcomeRegistrationScreen> {
                   print("Tap Event");
               },
             ),
-            
-            const SizedBox(height: 20),
 
+            const SizedBox(height: 20),
+            // Registration Form
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child:
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.email),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      obscureText: true,
+                    ),
+                  ],
+                )
+              )
             ),
           ],
         ),
