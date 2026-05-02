@@ -4,11 +4,11 @@ import '../models/journal_model.dart';
 
 class JournalService {
   String get userId => AuthService().currentUser?.uid ?? '';
+  final CollectionReference _moodCollection = FirebaseFirestore.instance.collection('moods');
 
-  final CollectionReference _journalCollection =
-      FirebaseFirestore.instance.collection('journals');
+  final CollectionReference _journalCollection = FirebaseFirestore.instance.collection('journals');
 
-  Future<void> addJournalEntry(JournalModel entry) async {
+  Future<void> addJournalWithMood(JournalModel entry) async {
     try {
       final newEntry = JournalModel(
         id: _journalCollection.doc().id,
@@ -16,7 +16,7 @@ class JournalService {
         title: entry.title,
         content: entry.content,
         date: entry.date,
-        mood: entry.mood,
+        moodId: entry.mood,
       );
 
       await _journalCollection.add(newEntry.toMap());
