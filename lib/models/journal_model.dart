@@ -3,12 +3,14 @@ class JournalModel {
   final String title;
   final String content;
   final DateTime date;
+  final String mood;
 
   JournalModel({
     required this.id,
     required this.title,
     required this.content,
     required this.date,
+    required this.mood,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class JournalModel {
       'title': title,
       'content': content,
       'date': date.toIso8601String(),
+      'mood': mood,
     };
   }
 
@@ -26,6 +29,7 @@ class JournalModel {
       title: data['title'],
       content: data['content'],
       date: DateTime.parse(data['date']),
+      mood: data['mood'],
     );
   }
 }
