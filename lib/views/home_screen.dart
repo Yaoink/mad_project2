@@ -3,6 +3,7 @@ import 'package:mad_project2/controllers/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../views/journal_screen.dart';
+import '../views/welcome_registration_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +14,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusedDay = DateTime.now();
+    _selectedDay = DateTime.now();
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +31,17 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await _authService.signOut();
-              Navigator.pushReplacementNamed(context, '/welcome');
-            },
-          ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await _authService.signOut();
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => WelcomeRegistrationScreen()),
+                );
+              },
+            ),
         ],
       ),
       body: Center(
@@ -53,11 +68,25 @@ class _HomeScreenState extends State<HomeScreen> {
             TableCalendar(
               firstDay: DateTime.utc(2020, 1, 1),
               lastDay: DateTime.utc(2030, 12, 31),
-              focusedDay: DateTime.now(),
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
               calendarFormat: CalendarFormat.month,
               onDaySelected: (selectedDay, focusedDay) {
-                // Handle day selection, e.g., navigate to journal entry for that day
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
               },
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  shape: BoxShape.circle,
+                ),
+                selectedDecoration: BoxDecoration(
+                  color: Colors.deepPurple,
+                  shape: BoxShape.circle,
+                ),
+              ),
             ),
           ],
         ),
