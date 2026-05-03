@@ -45,10 +45,12 @@ class JournalService {
     final startOfDay = DateTime(day.year, day.month, day.day);
     final endOfDay = startOfDay.add(Duration(days: 1));
 
+  print("Query userId: $userId");
+
     return _journalCollection
         .where('userId', isEqualTo: userId)
-        .where('date', isGreaterThanOrEqualTo: startOfDay)
-        .where('date', isLessThan: endOfDay)
+        .where('date', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
+        .where('date', isLessThan: Timestamp.fromDate(endOfDay))
         .snapshots()
         .map((snapshot) =>
             snapshot.docs
