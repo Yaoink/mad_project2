@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class JournalModel {
   final String id;
   final String userId;
@@ -17,23 +19,23 @@ class JournalModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'userId': userId,
       'title': title,
       'content': content,
-      'date': date.toIso8601String(),
+      'date': Timestamp.fromDate(date),
       'moodId': moodId,
     };
   }
 
-  factory JournalModel.fromMap(Map<String, dynamic> data) {
+  factory JournalModel.fromMap(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return JournalModel(
-      id: data['id'] ?? '',
+      id: doc.id,
       userId: data['userId'] ?? '',
       title: data['title'] ?? '',
       content: data['content'] ?? '',
-      date: DateTime.parse(data['date']),
-      moodId: data['moodIds'] ?? '',
+      date: (data['date'] as Timestamp).toDate(),
+      moodId: data['moodId'],
     );
   }
 }

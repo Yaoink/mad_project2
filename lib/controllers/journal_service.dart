@@ -2,24 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_service.dart';
 import '../models/journal_model.dart';
 
+
+
 class JournalService {
   String get userId => AuthService().currentUser?.uid ?? '';
-  final CollectionReference _moodCollection = FirebaseFirestore.instance.collection('moods');
 
   final CollectionReference _journalCollection = FirebaseFirestore.instance.collection('journals');
 
-  Future<void> addJournalWithMood(JournalModel entry) async {
+  Future<void> addJournal(JournalModel entry) async {
     try {
-      final newEntry = JournalModel(
-        id: _journalCollection.doc().id,
-        userId: userId,
-        title: entry.title,
-        content: entry.content,
-        date: entry.date,
-        moodId: _moodCollection.doc().id, // Assuming you want to link a mood entry here
-      );
-
-      await _journalCollection.add(newEntry.toMap());
+      await _journalCollection.add(entry.toMap());
     } catch (e) {
       print('Error adding journal entry: $e');
     }

@@ -9,14 +9,7 @@ class MoodService {
 
   Future<void> addMood(MoodModel mood) async {
     try {
-      final newMood = MoodModel(
-        id: _moodCollection.doc().id,
-        userId: userId,
-        mood: mood.mood,
-        timestamp: mood.timestamp,
-      );
-
-      await _moodCollection.add(newMood.toMap());
+      await _moodCollection.add(mood.toMap());
     } catch (e) {
       print('Error adding mood: $e');
     }
