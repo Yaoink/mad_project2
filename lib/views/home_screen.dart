@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../views/journal_screen.dart';
 import '../views/welcome_registration_screen.dart';
+import '../controllers/journal_service.dart';
+import '../models/journal_model.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
+  final JournalService journalService = JournalService();
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
@@ -87,6 +91,49 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: BoxShape.circle,
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+            //journal entries for selected day from calendar
+            Expanded(
+              child: StreamBuilder<List<JournalModel>>(
+                stream: journalService.getEntriesForDay(_selectedDay),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(
+                        child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text("No entries for this day"),
+                    );
+                  }
+                  final entries = snapshot.data!;
+
+                  return ListView.builder(
+                    itemCount: entries.length,
+                    itemBuilder: (context, index) {
+                      final entry = entries[index];
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          title: Text(entry.content),
+                          subtitle: Text(
+                            entry.date.toString(),
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              )
             ),
           ],
         ),
