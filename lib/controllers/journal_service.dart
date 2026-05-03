@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_service.dart';
 import '../models/journal_model.dart';
 
-
-
 class JournalService {
   String get userId => AuthService().currentUser?.uid ?? '';
 
@@ -23,7 +21,7 @@ class JournalService {
         .snapshots()
         .map((snapshot) =>
           snapshot.docs
-              .map((doc) => JournalModel.fromMap(doc.data() as Map<String, dynamic>))
+              .map((doc) => JournalModel.fromMap(doc))
               .toList());
   }
 
