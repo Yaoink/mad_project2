@@ -47,8 +47,8 @@ class JournalService {
 
     return _journalCollection
         .where('userId', isEqualTo: userId)
-        .where('timestamp', isGreaterThanOrEqualTo: startOfDay)
-        .where('timestamp', isLessThan: endOfDay)
+        .where('date', isGreaterThanOrEqualTo: startOfDay)
+        .where('date', isLessThan: endOfDay)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs

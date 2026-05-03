@@ -64,17 +64,25 @@ class _JournalScreenState extends State<JournalScreen> {
                   return;
                 }
 
-                final entry = JournalModel(
-                  id: '',
-                  title: _titleController.text,
-                  content: _contentController.text,
-                  userId: _journalService.userId,
-                  date: DateTime.now(),
-                );
+                try {
+                  final entry = JournalModel(
+                    id: '',
+                    title: _titleController.text,
+                    content: _contentController.text,
+                    userId: _journalService.userId,
+                    date: DateTime.now(),
+                  );
 
-                await _journalService.addJournal(entry);
+                  print("USER ID: ${_journalService.userId}");
 
-                Navigator.pop(context);
+                  await _journalService.addJournal(entry);
+
+                  print("SUCCESS");
+
+                  Navigator.pop(context);
+                } catch (e) {
+                  print("ERROR: $e");
+                }
               },
               child: Text('Save Entry'),
             ),

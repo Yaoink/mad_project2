@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mad_project2/controllers/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mad_project2/controllers/journal_service.dart';
 import '../views/home_screen.dart';
+import '../controllers/journal_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = AuthService();
+  final JournalService journalService = JournalService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
