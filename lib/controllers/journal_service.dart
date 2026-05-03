@@ -41,4 +41,18 @@ class JournalService {
     }
   }
   
+  Stream<List<JournalModel>> getEntriesForDay(DateTime day) {
+    final startOfDay = DateTime(day.year, day.month, day.day);
+    final endOfDay = startOfDay.add(Duration(days: 1));
+
+    return _journalCollection
+        .where('userId', isEqualTo: userId)
+        .where('timestamp', isGreaterThanOrEqualTo: startOfDay)
+        .where('timestamp', isLessThan: endOfDay)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs
+                .map((doc) => JournalModel.fromMap(doc))
+                .toList());
+  }
 }
