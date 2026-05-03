@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mad_project2/controllers/journal_service.dart';
+import '../models/journal_model.dart';
 
 class JournalScreen extends StatefulWidget {
   @override
@@ -6,7 +8,9 @@ class JournalScreen extends StatefulWidget {
 }
 
 class _JournalScreenState extends State<JournalScreen> {
-  final TextEditingController _controller = TextEditingController();
+  JournalService _journalService = JournalService();
+  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
   String _currentDate = '';
 
   @override
@@ -32,13 +36,49 @@ class _JournalScreenState extends State<JournalScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: TextField(
-          controller: _controller,
-          maxLines: null,
-          decoration: InputDecoration(
-            hintText: 'Write your journal entry here...',
-            border: OutlineInputBorder(),
-          ),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                hintText: "Title",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _contentController,
+              decoration: InputDecoration(
+                hintText: 'Write your thoughts here...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            //save
+            ElevatedButton(
+              onPressed: () async {
+                if (_contentController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please add text and select a mood")),
+                  );
+                  return;
+                }
+
+                final entry = JournalModel(
+                  id: '',
+                  title: _titleController.text,
+                  content: _contentController.text,
+                  userId: _journalService.userId,
+                  date: DateTime.now(),
+                );
+
+                await _journalService.addJournal(entry);
+
+                Navigator.pop(context);
+              },
+              child: Text('Save Entry'),
+            ),
+          ],
         ),
       ),
     );
